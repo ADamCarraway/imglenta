@@ -17,6 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::view('/home', 'home')->name('home')->middleware('auth'); //TODO make a test
+Route::view('/home', 'home')->middleware('auth')->name('home'); //TODO make a test
 Route::get('/feeds/create', 'FeedController@create')->name('feeds.create');
 Route::post('/feeds', 'FeedController@store')->name('feeds.store');

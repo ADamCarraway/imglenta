@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Feed;
-use App\Notifications\WelcomeEmail;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Notifications\Notification;
@@ -65,20 +63,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-         $user = User::create([
+         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-         $user->notify(new WelcomeEmail());
 
-         $feed = new Feed;
-         $feed->user_id = $user->id;
-         $feed->title = 'Моя первая лента';
-         $feed->info = 'Описание';
-         $feed->save();
-
-        return $user;
     }
 
 }
