@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Feed;
 use App\Http\Requests\StoreFeedRequest;
-use Illuminate\Http\Request;
 
 class FeedController extends Controller
 {
@@ -23,5 +22,12 @@ class FeedController extends Controller
         auth()->user()->feeds()->create($request->validated());
 
         return redirect()->route('feeds.create');
+    }
+
+    public function destroy(Feed $feed)
+    {
+        $this->authorize('destroy', $feed);
+
+        $feed->delete();
     }
 }

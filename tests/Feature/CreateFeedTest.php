@@ -4,9 +4,8 @@ namespace Tests\Feature;
 
 use App\Feed;
 use App\User;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CreateFeedTest extends TestCase
 {
@@ -17,7 +16,6 @@ class CreateFeedTest extends TestCase
     /** @test */
     public function user_can_see_form_add_feed()
     {
-
         $user = factory(User::class)->create();
         $this->be($user);
         $response = $this->get(route('feeds.create'))->assertStatus(200);
@@ -40,10 +38,11 @@ class CreateFeedTest extends TestCase
         $user = factory(User::class)->create();
         $this->be($user);
         $request = [
-            'title'=>'Title',
-            'info'=>'Info'
+            'title' => 'Title',
+            'info' => 'Info'
         ];
-        $this->post(route('feeds.store'),$request)->assertRedirect(route('feeds.create'));
+        $this->post(route('feeds.store'), $request)
+            ->assertRedirect(route('feeds.create'));
         $this->assertCount(1, auth()->user()->feeds()->where($request)->get());
     }
 
@@ -59,8 +58,27 @@ class CreateFeedTest extends TestCase
         $user = factory(User::class)->create();
         $this->be($user);
         $request = [];
-        $this->post(route('feeds.store'),$request)
-        ->assertSessionHasErrors(['title','info']);
+        $this->post(route('feeds.store'), $request)
+            ->assertSessionHasErrors(['title', 'info']);
 //            ->assertRedirect(route('feeds.create'));
+    }
+
+    /** @test */
+    public function user_can_delete_feed()
+    {
+        $this->withoutExceptionHandling();
+
+        $feed = factory(Feed::class)->create();
+        $this->be($feed->user);
+        $this->post(route('feeds.destroy',$feed))->assertStatus(200);
+        $this->assertCount(0,auth()->user()->feeds()->get());
+    }
+
+    /** @test */
+    public function guest_can_not_delete_feed()
+    {
+        $feed = factory(Feed::class)->create();
+        $this->post(route('feeds.destroy',$feed))
+            ->assertRedirect('/login');
     }
 }

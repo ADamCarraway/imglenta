@@ -1,9 +1,11 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
 use App\User;
-use Illuminate\Support\Str;
+use App\Feed;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +27,23 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
+
+$factory->define(Feed::class, function (Faker $faker) {
+    return [
+      'user_id'=>function(){
+        return factory(User::class)->create()->id;
+      },
+      'title'=>'Title',
+      'info'=>'Info'
+    ];
+});
+
+//$factory->define(Feed::class, function (Faker $faker) {
+//    return [
+//        'feed_id'=>function(){
+//            return factory(Feed::class)->create()->id;
+//        },
+//        'image_path'=>'test',
+//        'image_name'=>'test'
+//    ];
+//});
