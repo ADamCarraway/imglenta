@@ -47,10 +47,40 @@ class CreatePhotoTest extends TestCase
         $photo = UploadedFile::fake()->image('aaaa.png');
         $this->be($feed->user)
             ->post(route('photos.store', $feed), ['photo'=>$photo])
-            ->assertRedirect(route('feeds.show',$feed->id));
+            ->assertRedirect(route('feeds.show',$feed->id))
+            ->assertSessionHas('success');
         Storage::disk()->assertExists('public/photos/'.$photo->hashName());
         $this->assertCount(1,$feed->photos()->get());
         $photo_path = $feed->photos()->first()->path;
         $this->assertEquals($photo_path,$photo->hashName());
+    }
+
+    /** @test */
+    public function guest_can_create_photo()
+    {
+        $this->post(route('photos.store',0),['photo'=>1])
+            ->assertRedirect('/login');
+    }
+
+    /** @test */
+    public function user_can_not_create_photo_whith_incorrect_data()
+    {
+//        $this->withoutExceptionHandling();
+
+        $feed = factory(Feed::class)->create();
+
+        $this->be($feed->user)
+            ->post(route('photos.store', $feed), ['photo'=>''])
+            ->assertSessionHasErrors('photo');
+    }
+
+    /** @test */
+    public function user_can_not_create_anything_except_image_type()
+    {
+        $feed = factory(Feed::class)->create();
+
+        $this->be($feed->user)
+            ->post(route('photos.store', $feed), ['photo'=>'image.log'])
+            ->assertSessionHasErrors('photo');
     }
 }

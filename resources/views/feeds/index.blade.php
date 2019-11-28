@@ -21,7 +21,7 @@
                                </div>
                                <div class="col-4">
                                    <div class="flex justify-content-between">
-                                       <form action="{{ route('feeds.destroy', $feed) }}" method="post" class="">
+                                       <form action="{{ route('feeds.destroy', $feed) }}" method="post" class="d-inline-flex">
                                            @csrf
                                            @method('DELETE')
                                            <button type="submit" class="btn btn-link">
