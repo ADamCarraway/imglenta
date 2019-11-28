@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Feed;
 use App\Http\Requests\StoreFeedRequest;
-use App\User;
+use App\Http\Requests\UpdateFeedRequest;
+use Illuminate\Contracts\Session\Session;
 
 class FeedController extends Controller
 {
@@ -24,14 +25,20 @@ class FeedController extends Controller
     {
         auth()->user()->feeds()->create($request->validated());
 
-        return redirect()->route('feeds.create');
+        return redirect()->route('feeds.index')->with('success','Your feed is created');
     }
 
     public function destroy(Feed $feed)
     {
         $this->authorize('manage', $feed);
 
+        if (auth()->user()->feeds()->count() == 1) {
+            return redirect()->route('feeds.index')->with('error','You cannot delete the last feed');
+        }
+
         $feed->delete();
+
+        return redirect()->route('feeds.index')->with('success','Feed is delete');
     }
 
     public function show(Feed $feed)
@@ -39,5 +46,21 @@ class FeedController extends Controller
         $this->authorize('manage', $feed);
 
         return view('feeds.show',compact('feed'));
+    }
+
+    public function update(Feed $feed, UpdateFeedRequest $request)
+    {
+        $this->authorize('manage', $feed);
+
+        $feed->update($request->validated());
+
+        return redirect()->route('feeds.show', $feed)->with('success','Feed data changed.');
+    }
+
+    public function edit(Feed $feed)
+    {
+        $this->authorize('manage', $feed);
+
+        return view('feeds.edit', compact('feed'));
     }
 }

@@ -42,7 +42,8 @@ class CreateFeedTest extends TestCase
             'info' => 'Info'
         ];
         $this->post(route('feeds.store'), $request)
-            ->assertRedirect(route('feeds.create'));
+            ->assertRedirect(route('feeds.index'))
+        ->assertSessionHas('success');
         $this->assertCount(1, auth()->user()->feeds()->where($request)->get());
     }
 

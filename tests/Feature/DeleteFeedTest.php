@@ -8,7 +8,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class DestroyFeedTest extends TestCase
+class DeleteFeedTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -19,8 +19,11 @@ class DestroyFeedTest extends TestCase
 
         $feed = factory(Feed::class)->create();
         $this->be($feed->user);
-        $this->delete(route('feeds.destroy',$feed))->assertStatus(200);
-        $this->assertCount(0,auth()->user()->feeds()->get());
+        $feed2 = factory(Feed::class)->create(['user_id'=>auth()->id()]);
+        $this->delete(route('feeds.destroy',$feed))
+        ->assertRedirect(route('feeds.index'))
+        ->assertSessionHas('success');
+        $this->assertCount(1,auth()->user()->feeds()->get());
     }
 
     /** @test */
@@ -39,5 +42,15 @@ class DestroyFeedTest extends TestCase
         $this->be($user)
             ->delete(route('feeds.destroy',$feed))
             ->assertStatus(403);
+    }
+
+    /** @test */
+    public function user_can_not_delete_last_feed()
+    {
+        $feed = factory(Feed::class)->create();
+        $this->be($feed->user)
+            ->delete( route('feeds.destroy',$feed))
+            ->assertSessionHas('error');
+        $this->assertTrue(Feed::where('id',$feed->id)->exists());
     }
 }

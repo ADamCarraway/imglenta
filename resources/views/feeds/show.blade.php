@@ -2,11 +2,14 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-md-8"></div>
-            <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
                 {{ $feed->title }}
-                {{ $feed->info }}
+            </div>
+            <div class="card-body">
+                <p>
+                    {{ $feed->info }}
+                </p>
             </div>
         </div>
     </div>

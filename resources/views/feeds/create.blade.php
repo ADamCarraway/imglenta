@@ -2,9 +2,16 @@
 
 @section('content')
     <div class="container">
+
+        <div class="card">
+            <div class="card-header">
+                Создание ленты
+            </div>
+            <div class="card-body">
+
         @if ($errors->any())
             <div class="alert alert-danger">
-                <ul>
+                <ul class="mb-0">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -27,6 +34,7 @@
                 Создать
             </button>
         </form>
-
+            </div>
+        </div>
     </div>
 @endsection

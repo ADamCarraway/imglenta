@@ -67,6 +67,4 @@ class ViewFeedTest extends TestCase
         $this->get(route('feeds.show',$feed->id))
             ->assertRedirect('/login');
     }
-
-
 }
