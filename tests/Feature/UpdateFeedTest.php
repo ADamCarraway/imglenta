@@ -31,8 +31,6 @@ class UpdateFeedTest extends TestCase
     /** @test */
     public function user_can_not_update_feed_whith_incorrect_data()
     {
-//        $this->withoutExceptionHandling();
-
         $feed = factory(Feed::class)->create();
 
         $this->be($feed->user)
@@ -55,9 +53,7 @@ class UpdateFeedTest extends TestCase
     /** @test */
     public function guest_can_not_update_not_feed()
     {
-        $feed = factory(Feed::class)->create();
-
-        $this->put(route('feeds.update', $feed), ['title'=>'ddd', 'info'=>'ddd'])
+        $this->put(route('feeds.update', 0), ['title'=>'ddd', 'info'=>'ddd'])
             ->assertRedirect('/login');
     }
 }
