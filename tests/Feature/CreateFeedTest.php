@@ -63,22 +63,5 @@ class CreateFeedTest extends TestCase
 //            ->assertRedirect(route('feeds.create'));
     }
 
-    /** @test */
-    public function user_can_delete_feed()
-    {
-        $this->withoutExceptionHandling();
 
-        $feed = factory(Feed::class)->create();
-        $this->be($feed->user);
-        $this->post(route('feeds.destroy',$feed))->assertStatus(200);
-        $this->assertCount(0,auth()->user()->feeds()->get());
-    }
-
-    /** @test */
-    public function guest_can_not_delete_feed()
-    {
-        $feed = factory(Feed::class)->create();
-        $this->post(route('feeds.destroy',$feed))
-            ->assertRedirect('/login');
-    }
 }

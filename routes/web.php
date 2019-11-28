@@ -18,8 +18,4 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::view('/home', 'home')->middleware('auth')->name('home'); //TODO make a test
-Route::get('/feeds/create', 'FeedController@create')->name('feeds.create');
-Route::post('/feeds', 'FeedController@store')->name('feeds.store');
-Route::post('/feeds/{feed}/destroy', 'FeedController@destroy')->name('feeds.destroy');
-
-Route::view('/items/create','feeds.items.create')->middleware('auth')->name('items.create');
+Route::resource('feeds','FeedController')->middleware('auth');
