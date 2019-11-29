@@ -16,4 +16,9 @@ class Feed extends Model
     {
         return $this->hasMany(Photo::class);
     }
+
+    public function subscribers()
+    {
+        return $this->hasMany(Subscriber::class);
+    }
 }

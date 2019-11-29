@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 class Photo extends Model
 {
     public $guarded = ['id'];
+    protected $withCount = ['likes'];
 
     protected static function boot()
     {
@@ -26,5 +27,10 @@ class Photo extends Model
     public function likes()
     {
         return $this->hasMany(Like::class);
+    }
+
+    public function isLike()
+    {
+        return $this->likes()->where('user_id', auth()->id())->exists();
     }
 }

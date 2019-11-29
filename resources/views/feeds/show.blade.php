@@ -23,7 +23,28 @@
                 <div class="card md-6">
                     <img class="card-img-top" src="{{ asset('storage/photos/'.$photo->path) }}" alt="Card image cap">
                     <div class="card-body">
-                        <form action="{{ route('photos.destroy', [$feed,$photo]) }}" method="post" class="d-inline-flex float-right">
+                        @if($photo->isLike())
+                            <form action="{{ route('photos.unlike', [$feed,$photo]) }}" method="post"
+                                  class="d-inline-flex float-right">
+                                @method("DELETE")
+                                @csrf
+                                <button type="submit" class="btn btn-link">
+                                    Дизлайк
+                                    {{ $photo->likes_count }}
+                                </button>
+                            </form>
+                        @else
+                            <form action="{{ route('photos.like', [$feed,$photo]) }}" method="post"
+                                  class="d-inline-flex float-right">
+                                @csrf
+                                <button type="submit" class="btn btn-link">
+                                    Лайк
+                                    {{ $photo->likes_count }}
+                                </button>
+                            </form>
+                        @endif
+                        <form action="{{ route('photos.destroy', [$feed,$photo]) }}" method="post"
+                              class="d-inline-flex float-left">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-link">

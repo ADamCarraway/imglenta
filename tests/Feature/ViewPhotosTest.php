@@ -12,11 +12,12 @@ class ViewPhotosTest extends TestCase
     /** @test */
     public function user_can_see_photos_in_his_feed()
     {
-        $photos = factory(Photo::class)->create();
+        $photo = factory(Photo::class)->create();
         $photos_two = factory(Photo::class)->create();
-        $this->be($photos->feed()->first()->user)
-            ->get(route('feeds.show',$photos->feed()->first()->id))
-            ->assertSee($photos->path)
-            ->assertDontSee($photos_two->path);
+        $this->be($photo->feed()->first()->user)
+            ->get(route('feeds.show',$photo->feed()->first()->id))
+            ->assertSee($photo->path)
+            ->assertDontSee($photos_two->path)
+            ->assertSee(route('photos.like',[$photo->feed, $photo]));
     }
 }

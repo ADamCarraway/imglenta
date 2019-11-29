@@ -55,4 +55,21 @@ class User extends Authenticatable
     {
         $photo->likes()->where('user_id', $this->id)->delete();
     }
+
+    public function subscribe(Feed $feed)
+    {
+        $data = [
+            'user_id' => $this->id,
+            'feed_id' => $feed->id
+        ];
+
+        if(!Subscriber::where($data)->exists()){
+            Subscriber::query()->create($data);
+        }
+    }
+
+    public function unsubscribe(Feed $feed)
+    {
+        $feed->subscribers()->where('user_id', $this->id)->delete();
+    }
 }
