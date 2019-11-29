@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Feed;
 use App\Photo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class DeletePhotoTest extends TestCase
@@ -13,15 +15,16 @@ class DeletePhotoTest extends TestCase
     /** @test */
     public function user_can_delete_photo()
     {
-        $this->withoutExceptionHandling();
-
         $photo = factory(Photo::class)->create();
-        factory(Photo::class)->create(['feed_id' => $photo->feed()->first()->id]);
-        $this->be($photo->feed()->first()->user)
-            ->delete(route('photos.destroy', [$photo->feed, $photo]))
-            ->assertRedirect(route('feeds.show', $photo->feed->id))
+        $feed = $photo->feed;
+
+        $this->be($feed->user)
+            ->delete(route('photos.destroy', [$feed, $photo]))
+            ->assertRedirect(route('feeds.show', $feed->id))
             ->assertSessionHas('success');
-        $this->assertCount(1, auth()->user()->feeds()->first()->photos()->get());;
+
+        $this->assertFalse($feed->photos()->exists());
+        Storage::disk()->assertMissing('public/photos/'.$photo->path);
     }
 
     /** @test */
@@ -31,16 +34,20 @@ class DeletePhotoTest extends TestCase
             ->assertRedirect('/login');
     }
 
-//    /** @test */
-//    public function user_can_not_delete_not_his_photo()
-//    {
-////        $this->withoutExceptionHandling();
-//
-//        $photo = factory(Photo::class)->create();
-//        $photo_two = factory(Photo::class)->create();
-//
-//        $this->be($photo->feed()->first()->user)
-//            ->delete(route('photos.destroy', [$photo_two->feed, $photo_two]))
-//            ->assertStatus(403);
-//    }
+    /** @test */
+    public function user_can_not_delete_not_his_photo()
+    {
+        $photo = factory(Photo::class)->create();
+        $photo_two = factory(Photo::class)->create();
+        $feed = $photo->feed;
+
+        $this->be($feed->user)
+            ->delete(route('photos.destroy', [$photo_two->feed, $photo_two]))
+            ->assertStatus(403);
+
+        $this->delete(route('photos.destroy', [$feed, $photo_two]))
+            ->assertStatus(404);
+    }
+
+
 }
