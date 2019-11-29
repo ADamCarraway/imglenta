@@ -11,13 +11,13 @@ class SubscribeController extends Controller
     {
         auth()->user()->subscribe($feed);
 
-        return redirect()->route('feeds.show', $feed->id);
+        return redirect()->route('user.feeds.show', $feed->id);
     }
 
     public function destroy(Feed $feed)
     {
         auth()->user()->unsubscribe($feed);
 
-        return redirect()->route('feeds.show', $feed->id);
+        return redirect()->route('user.feeds.show', $feed->id);
     }
 }

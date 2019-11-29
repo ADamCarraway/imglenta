@@ -6,9 +6,33 @@
             <div class="card-header">
                 <div class="d-flex justify-content-lg-between">
                     {{ $feed->title }}
-                    <a href="{{ route('photos.create',$feed) }}">
-                        Добавить фотто
-                    </a>
+                    <div>
+                        @can('manage', $feed)
+                            <a href="{{ route('photos.create',$feed) }}" class="btn btn-link">
+                                Добавить фотто
+                            </a>
+                        @endcan
+                        @if(auth()->id() != $feed->user_id)
+                            @if($feed->isSubscriber())
+                                <form action="{{ route('feeds.unsubscribe', $feed) }}" method="post"
+                                      class="d-inline-flex float-right">
+                                    @method("DELETE")
+                                    @csrf
+                                    <button type="submit" class="btn btn-link">
+                                        Отписаться
+                                    </button>
+                                </form>
+                            @else
+                                <form action="{{ route('feeds.subscribe', $feed) }}" method="post"
+                                      class="d-inline-flex float-right">
+                                    @csrf
+                                    <button type="submit" class="btn btn-link">
+                                        Подписаться
+                                    </button>
+                                </form>
+                            @endif
+                        @endif
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -43,14 +67,16 @@
                                 </button>
                             </form>
                         @endif
-                        <form action="{{ route('photos.destroy', [$feed,$photo]) }}" method="post"
-                              class="d-inline-flex float-left">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-link">
-                                Удалить
-                            </button>
-                        </form>
+                        @can('manage', $feed)
+                            <form action="{{ route('photos.destroy', [$feed,$photo]) }}" method="post"
+                                  class="d-inline-flex float-left">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-link">
+                                    Удалить
+                                </button>
+                            </form>
+                        @endcan
                     </div>
                 </div>
                 <br>

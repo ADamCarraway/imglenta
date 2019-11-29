@@ -30,3 +30,6 @@ Route::delete('/feeds/{feed}/photos/{photo}/unlike', 'LikeController@destroy')->
 
 Route::post('/feeds/{feed}/subscribe', 'SubscribeController@store')->middleware('auth')->name('feeds.subscribe');
 Route::delete('/feeds/{feed}/unsubscribe', 'SubscribeController@destroy')->middleware('auth')->name('feeds.unsubscribe');
+
+Route::get('user/feeds/{feed}', 'ShowUserFeedController@show')->name('user.feeds.show');
+

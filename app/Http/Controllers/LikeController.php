@@ -13,13 +13,13 @@ class LikeController extends Controller
     {
         auth()->user()->like($photo);
 
-        return redirect()->route('feeds.show', $feed->id);
+        return redirect()->route('user.feeds.show', $feed->id);
     }
 
     public function destroy(Feed $feed, Photo $photo)
     {
         auth()->user()->unlike($photo);
 
-        return redirect()->route('feeds.show', $feed->id);
+        return redirect()->route('user.feeds.show', $feed->id);
     }
 }

@@ -22,7 +22,7 @@ class SubscribeTest extends TestCase
 
         $this->be($user)
             ->post(route('feeds.subscribe', $feed))
-            ->assertRedirect(route('feeds.show', $feed->id));
+            ->assertRedirect(route('user.feeds.show', $feed->id));
 
         $this->assertCount(1, $feed->subscribers()->get());
     }
@@ -47,7 +47,7 @@ class SubscribeTest extends TestCase
 
         $this->assertCount(1, $feed->subscribers()->get());
         $this->delete(route('feeds.unsubscribe', $feed))
-            ->assertRedirect(route('feeds.show', $feed->id));
+            ->assertRedirect(route('user.feeds.show', $feed->id));
         $this->assertCount(0, $feed->subscribers()->get());
     }
 }

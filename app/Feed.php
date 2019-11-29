@@ -21,4 +21,9 @@ class Feed extends Model
     {
         return $this->hasMany(Subscriber::class);
     }
+
+    public function isSubscriber()
+    {
+        return $this->subscribers()->where('user_id', auth()->id())->exists();
+    }
 }
