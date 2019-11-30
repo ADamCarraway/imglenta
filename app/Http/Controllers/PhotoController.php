@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PhotoCreated;
+use App\Events\SendEmailNewPhoto;
 use App\Feed;
 use App\Http\Requests\StorePhotoRequest;
 use App\Photo;
@@ -18,6 +20,8 @@ class PhotoController extends Controller
         $request->file('photo')->store('public/photos');
 
         $feed->photos()->create(['path' => $request->file('photo')->hashName()]);
+
+        event(new PhotoCreated($feed));
 
         return redirect()->route('feeds.show', $feed->id)->with('success', 'Your image is uploaded!');
     }
