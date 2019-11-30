@@ -22,8 +22,7 @@ class AddLikeTest extends TestCase
         $feed = $photo->feed;
 
         $this->be($user)
-            ->post(route('photos.like',[$feed, $photo]))
-            ->assertRedirect(route('feeds.show', $feed->id));
+            ->post(route('photos.like',[$feed, $photo]));
         $this->assertCount(1, $photo->likes()->get());
     }
 
@@ -45,8 +44,7 @@ class AddLikeTest extends TestCase
 
         $user->like($photo);
         $this->be($user)
-            ->delete(route('photos.unlike',[$feed, $photo]))
-            ->assertRedirect(route('feeds.show', $feed->id));
+            ->delete(route('photos.unlike',[$feed, $photo]));
         $this->assertCount(0, $photo->likes()->get());
     }
 }
