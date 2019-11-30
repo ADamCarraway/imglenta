@@ -24,7 +24,7 @@
                   class="d-inline-flex float-right">
                 @csrf
                 <button type="submit" class="btn btn-link">
-                    Лайк
+                    Like
                     {{ $photo->likes_count }}
                 </button>
             </form>
@@ -35,7 +35,7 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-link">
-                    Удалить
+                    Unlike
                 </button>
             </form>
         @endcan

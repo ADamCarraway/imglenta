@@ -4,7 +4,7 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                Мои ленты
+                My feeds
             </div>
             <div class="card-body">
                 <div class="list-group list-group-flush">
@@ -25,11 +25,11 @@
                                            @csrf
                                            @method('DELETE')
                                            <button type="submit" class="btn btn-link">
-                                               Удалить
+                                               Remove
                                            </button>
                                        </form>
                                        <a href="{{ route('feeds.edit',$feed->id) }}">
-                                           Редактировать
+                                           To change
                                        </a>
                                    </div>
                                </div>

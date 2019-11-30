@@ -5,7 +5,7 @@
 
         <div class="card">
             <div class="card-header">
-                Создание ленты
+                Feed editing
             </div>
             <div class="card-body">
 
@@ -22,17 +22,17 @@
                     @csrf
                     @method('PUT')
                     <div class="">
-                        <label>Название</label>
+                        <label>Title</label>
                         <input type="text" name="title" class="form-control" value="{{ $feed->title }}">
                     </div>
                     <br>
                     <div class="">
-                        <label>Описание</label>
+                        <label>Description</label>
                         <textarea type="text" name="info" class="form-control">{{ $feed->info }}</textarea>
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">
-                        Изменить
+                        Change
                     </button>
                 </form>
             </div>

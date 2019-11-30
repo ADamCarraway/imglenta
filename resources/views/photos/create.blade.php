@@ -5,7 +5,7 @@
 
         <div class="card">
             <div class="card-header">
-                Добавление фото
+                Adding photos
             </div>
             <div class="card-body">
                 @if ($errors->any())
@@ -20,12 +20,12 @@
                 <form method="post" action="{{ route('photos.store',$feed) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="">
-                        <label>Описание</label>
+                        <label>Select photo</label><br>
                         <input type="file" name="photo">
                     </div>
                     <br>
                     <button type="submit" class="btn btn-primary">
-                        Добавить
+                        Add
                     </button>
                 </form>
             </div>

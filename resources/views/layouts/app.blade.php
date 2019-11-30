@@ -57,11 +57,11 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
                                     <a class="dropdown-item" href="{{ route('feeds.index') }}">
-                                        Мои ленты
+                                        My feeds
                                     </a>
 
                                     <a class="dropdown-item" href="{{ route('feeds.create') }}">
-                                        Создать ленту
+                                        Create the feed
                                     </a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"

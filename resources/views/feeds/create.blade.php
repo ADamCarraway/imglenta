@@ -5,7 +5,7 @@
 
         <div class="card">
             <div class="card-header">
-                Создание ленты
+                Creating a feed
             </div>
             <div class="card-body">
 
@@ -21,17 +21,17 @@
         <form method="post" action="{{ route('feeds.store') }}">
             @csrf
             <div class="">
-                <label>Название</label>
+                <label>Title</label>
                 <input type="text" name="title" class="form-control">
             </div>
             <br>
             <div class="">
-                <label>Описание</label>
+                <label>Description</label>
                 <textarea type="text" name="info" class="form-control"></textarea>
             </div>
             <br>
             <button type="submit" class="btn btn-primary">
-                Создать
+                Сreate
             </button>
         </form>
             </div>

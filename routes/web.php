@@ -15,8 +15,6 @@ Route::get('/', 'ShowUserFeedController@index');
 
 Auth::routes();
 
-Route::view('/home', 'home')->middleware('auth')->name('home'); //TODO make a test
-
 Route::resource('feeds','FeedController')->middleware('auth');
 
 Route::get('/feeds/{feed}/photos', 'PhotoController@create')->middleware('auth')->name('photos.create');

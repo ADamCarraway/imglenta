@@ -11,7 +11,7 @@
                     <div>
                         @can('manage', $feed)
                             <a href="{{ route('photos.create',$feed) }}" class="btn btn-link">
-                                Добавить фотто
+                                Add a photo
                             </a>
                         @endcan
                         @if(auth()->id() != $feed->user_id)
@@ -21,7 +21,7 @@
                                     @method("DELETE")
                                     @csrf
                                     <button type="submit" class="btn btn-link">
-                                        Отписаться
+                                        Subscribe
                                     </button>
                                 </form>
                             @else
@@ -29,7 +29,7 @@
                                       class="d-inline-flex float-right">
                                     @csrf
                                     <button type="submit" class="btn btn-link">
-                                        Подписаться
+                                        Unsubscribe
                                     </button>
                                 </form>
                             @endif
