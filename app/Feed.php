@@ -3,10 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Feed extends Model
 {
     public $guarded = ['id'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function (self $feed){
+            $feed->photos()->delete();
+            $feed->subscribers()->delete();
+        });
+    }
 
     public function user(){
         return $this->belongsTo(User::class);

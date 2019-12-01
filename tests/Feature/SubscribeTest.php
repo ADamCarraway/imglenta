@@ -4,14 +4,12 @@ namespace Tests\Feature;
 
 use App\Feed;
 use App\Notifications\HaveNewPhotoEmal;
-use App\Photo;
 use App\Subscriber;
 use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SubscribeTest extends TestCase
 {
@@ -65,7 +63,7 @@ class SubscribeTest extends TestCase
 
         $photo = UploadedFile::fake()->image('aaaa.png');
         $this->be($sub->feed->user)
-            ->post(route('photos.store', $sub->feed), ['photo'=>$photo]);
+            ->post(route('photos.store', $sub->feed), ['photo' => $photo]);
 
         Notification::assertSentTo(
             $sub->user,

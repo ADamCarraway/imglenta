@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Feed;
+use App\Photo;
+use App\Subscriber;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -52,5 +54,18 @@ class DeleteFeedTest extends TestCase
             ->delete( route('feeds.destroy',$feed))
             ->assertSessionHas('error');
         $this->assertTrue(Feed::where('id',$feed->id)->exists());
+    }
+
+    /** @test */
+    public function after_deleted_feed_delete_photo_and_subs()
+    {
+        $sub = factory(Subscriber::class)->create();
+        $feed = $sub->feed;
+        factory(Photo::class)->create(['feed_id'=>$feed->id]);
+
+        $sub->feed->delete();
+        $this->assertCount(0, Feed::where('id', $feed)->get());
+        $this->assertCount(0, $feed->photos()->get());
+        $this->assertCount(0, $feed->subscribers()->get());
     }
 }

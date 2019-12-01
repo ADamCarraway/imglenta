@@ -3,12 +3,10 @@
 namespace Tests\Feature;
 
 use App\Feed;
-use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreatePhotoTest extends TestCase
 {
@@ -19,7 +17,7 @@ class CreatePhotoTest extends TestCase
     {
 //        $this->withoutExceptionHandling();
 
-        $this->get(route('photos.create',0))
+        $this->get(route('photos.create', 0))
             ->assertRedirect('/login');
     }
 
@@ -30,7 +28,7 @@ class CreatePhotoTest extends TestCase
 
         $feed = factory(Feed::class)->create();
         $this->be($feed->user)
-            ->get(route('photos.create',$feed))
+            ->get(route('photos.create', $feed))
             ->assertStatus(200)
             ->assertViewIs('photos.create')
             ->assertViewHas('feed');
@@ -46,19 +44,19 @@ class CreatePhotoTest extends TestCase
         $feed = factory(Feed::class)->create();
         $photo = UploadedFile::fake()->image('aaaa.png');
         $this->be($feed->user)
-            ->post(route('photos.store', $feed), ['photo'=>$photo])
-            ->assertRedirect(route('feeds.show',$feed->id))
+            ->post(route('photos.store', $feed), ['photo' => $photo])
+            ->assertRedirect(route('feeds.show', $feed->id))
             ->assertSessionHas('success');
-        Storage::disk()->assertExists('public/photos/'.$photo->hashName());
-        $this->assertCount(1,$feed->photos()->get());
+        Storage::disk()->assertExists('public/photos/' . $photo->hashName());
+        $this->assertCount(1, $feed->photos()->get());
         $photo_path = $feed->photos()->first()->path;
-        $this->assertEquals($photo_path,$photo->hashName());
+        $this->assertEquals($photo_path, $photo->hashName());
     }
 
     /** @test */
     public function guest_can_create_photo()
     {
-        $this->post(route('photos.store',0),['photo'=>1])
+        $this->post(route('photos.store', 0), ['photo' => 1])
             ->assertRedirect('/login');
     }
 
@@ -70,7 +68,7 @@ class CreatePhotoTest extends TestCase
         $feed = factory(Feed::class)->create();
 
         $this->be($feed->user)
-            ->post(route('photos.store', $feed), ['photo'=>''])
+            ->post(route('photos.store', $feed), ['photo' => ''])
             ->assertSessionHasErrors('photo');
     }
 
@@ -80,7 +78,7 @@ class CreatePhotoTest extends TestCase
         $feed = factory(Feed::class)->create();
 
         $this->be($feed->user)
-            ->post(route('photos.store', $feed), ['photo'=>'image.log'])
+            ->post(route('photos.store', $feed), ['photo' => 'image.log'])
             ->assertSessionHasErrors('photo');
     }
 }

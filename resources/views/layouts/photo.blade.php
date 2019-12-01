@@ -8,14 +8,14 @@
         {{ $photo->created_at->diffForHumans() }}
     </div>
     <img class="card-img-top" src="{{ asset('storage/photos/'.$photo->path) }}" alt="Card image cap">
-    <div class="card-body">
+    <div class="card-body border-top">
         @if($photo->isLike())
             <form action="{{ route('photos.unlike', [$photo->feed, $photo]) }}" method="post"
                   class="d-inline-flex float-right">
                 @method("DELETE")
                 @csrf
                 <button type="submit" class="btn btn-link">
-                    Дизлайк
+                    Unlike
                     {{ $photo->likes_count }}
                 </button>
             </form>
@@ -35,7 +35,7 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-link">
-                    Unlike
+                    Delete
                 </button>
             </form>
         @endcan

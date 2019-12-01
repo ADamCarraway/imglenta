@@ -23,7 +23,7 @@ class RegistrationTest extends TestCase
         ];
 
         $response = $this->post('/register', $request)
-            ->assertRedirect('/home');
+            ->assertRedirect('/feeds');
         $this->assertTrue(auth()->check());
     }
 
