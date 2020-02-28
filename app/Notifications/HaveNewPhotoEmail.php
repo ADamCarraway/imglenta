@@ -3,10 +3,11 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class HaveNewPhotoEmal extends Notification
+class HaveNewPhotoEmail extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -42,6 +43,6 @@ class HaveNewPhotoEmal extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('In te feed ' . $this->feed->title . 'a new photo.');
+            ->line('In te feed ' . $this->feed->title . ' a new photo.');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\PhotoCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,8 +15,9 @@ class Photo extends Model
     {
         parent::boot();
 
-        static::deleted(function (self $photo){
-            Storage::disk('public')->delete('photos/'.$photo->path);
+        static::deleted(function (self $photo) {
+            Storage::disk('public')->delete('photos/' . $photo->path);
+            $photo->likes()->delete();
         });
     }
 

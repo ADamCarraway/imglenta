@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\PhotoCreated;
-use App\Notifications\HaveNewPhotoEmal;
+use App\Notifications\HaveNewPhotoEmail;
 use App\User;
 use Illuminate\Support\Facades\Notification;
 
@@ -20,6 +20,6 @@ class SendEmailNewPhoto
         $id_subs = $event->feed->subscribers()->pluck('user_id');
         $users = User::whereIn('id', $id_subs)->get();
 
-        Notification::send($users, new HaveNewPhotoEmal($event->feed));
+        Notification::send($users, new HaveNewPhotoEmail($event->feed));
     }
 }

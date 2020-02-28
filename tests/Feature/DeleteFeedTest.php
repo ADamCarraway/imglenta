@@ -6,9 +6,8 @@ use App\Feed;
 use App\Photo;
 use App\Subscriber;
 use App\User;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class DeleteFeedTest extends TestCase
 {
@@ -21,18 +20,18 @@ class DeleteFeedTest extends TestCase
 
         $feed = factory(Feed::class)->create();
         $this->be($feed->user);
-        $feed2 = factory(Feed::class)->create(['user_id'=>auth()->id()]);
-        $this->delete(route('feeds.destroy',$feed))
-        ->assertRedirect(route('feeds.index'))
-        ->assertSessionHas('success');
-        $this->assertCount(1,auth()->user()->feeds()->get());
+        $feed2 = factory(Feed::class)->create(['user_id' => auth()->id()]);
+        $this->delete(route('feeds.destroy', $feed))
+            ->assertRedirect(route('feeds.index'))
+            ->assertSessionHas('success');
+        $this->assertCount(1, auth()->user()->feeds()->get());
     }
 
     /** @test */
     public function guest_can_not_delete_feed()
     {
         $feed = factory(Feed::class)->create();
-        $this->delete(route('feeds.destroy',$feed))
+        $this->delete(route('feeds.destroy', $feed))
             ->assertRedirect('/login');
     }
 
@@ -42,7 +41,7 @@ class DeleteFeedTest extends TestCase
         $user = factory(User::class)->create();
         $feed = factory(Feed::class)->create();
         $this->be($user)
-            ->delete(route('feeds.destroy',$feed))
+            ->delete(route('feeds.destroy', $feed))
             ->assertStatus(403);
     }
 
@@ -51,9 +50,9 @@ class DeleteFeedTest extends TestCase
     {
         $feed = factory(Feed::class)->create();
         $this->be($feed->user)
-            ->delete( route('feeds.destroy',$feed))
+            ->delete(route('feeds.destroy', $feed))
             ->assertSessionHas('error');
-        $this->assertTrue(Feed::where('id',$feed->id)->exists());
+        $this->assertTrue(Feed::where('id', $feed->id)->exists());
     }
 
     /** @test */
@@ -61,10 +60,10 @@ class DeleteFeedTest extends TestCase
     {
         $sub = factory(Subscriber::class)->create();
         $feed = $sub->feed;
-        factory(Photo::class)->create(['feed_id'=>$feed->id]);
+        factory(Photo::class)->create(['feed_id' => $feed->id]);
 
         $sub->feed->delete();
-        $this->assertCount(0, Feed::where('id', $feed)->get());
+        $this->assertDatabaseMissing('feeds', ['id' => $feed]);
         $this->assertCount(0, $feed->photos()->get());
         $this->assertCount(0, $feed->subscribers()->get());
     }

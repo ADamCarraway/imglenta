@@ -6,6 +6,7 @@ use App\Events\PhotoCreated;
 use App\Events\SendEmailNewPhoto;
 use App\Feed;
 use App\Http\Requests\StorePhotoRequest;
+use App\Jobs\SendEmaleNewPhoto;
 use App\Photo;
 
 class PhotoController extends Controller

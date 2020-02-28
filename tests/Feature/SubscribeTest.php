@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Feed;
-use App\Notifications\HaveNewPhotoEmal;
+use App\Notifications\HaveNewPhotoEmail;
 use App\Subscriber;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -67,7 +67,7 @@ class SubscribeTest extends TestCase
 
         Notification::assertSentTo(
             $sub->user,
-            HaveNewPhotoEmal::class
+            HaveNewPhotoEmail::class
         );
 
 

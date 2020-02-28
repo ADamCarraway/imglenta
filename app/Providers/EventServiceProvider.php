@@ -6,7 +6,7 @@ use App\Events\PhotoCreated;
 use App\Listeners\CreateFeed;
 use App\Listeners\SendEmailNewPhoto;
 use App\Listeners\SendWelcomeEmail;
-use App\Notifications\HaveNewPhotoEmal;
+use App\Notifications\HaveNewPhotoEmail;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
