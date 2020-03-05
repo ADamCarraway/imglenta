@@ -41,4 +41,35 @@ class User extends Authenticatable
     {
         return $this->hasMany(Feed::class);
     }
+
+    public function like(Photo $photo)
+    {
+        $data = ['user_id' => $this->id, 'photo_id' => $photo->id];
+
+        if(!Like::where($data)->exists()){
+            Like::query()->create($data);
+        }
+    }
+
+    public function unlike(Photo $photo)
+    {
+        $photo->likes()->where('user_id', $this->id)->delete();
+    }
+
+    public function subscribe(Feed $feed)
+    {
+        $data = [
+            'user_id' => $this->id,
+            'feed_id' => $feed->id
+        ];
+
+        if(!Subscriber::where($data)->exists()){
+            Subscriber::query()->create($data);
+        }
+    }
+
+    public function unsubscribe(Feed $feed)
+    {
+        $feed->subscribers()->where('user_id', $this->id)->delete();
+    }
 }

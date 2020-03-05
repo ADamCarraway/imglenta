@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateFeedRequest;
 
 class FeedController extends Controller
 {
+
     public function index()
     {
         $feeds = auth()->user()->feeds()->get();

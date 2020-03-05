@@ -1,39 +1,52 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <div class="d-flex justify-content-lg-between">
-                    {{ $feed->title }}
-                    <a href="{{ route('photos.create',$feed) }}">
-                        Добавить фотто
-                    </a>
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-lg-between">
+                {{ $feed->user->name }}
+                >
+                {{ $feed->title }}
+                <div>
+                    @can('manage', $feed)
+                        <a href="{{ route('photos.create',$feed) }}" class="btn btn-link">
+                            Add a photo
+                        </a>
+                    @endcan
+                    @if(auth()->id() != $feed->user_id)
+                        @if($feed->isSubscriber())
+                            <form action="{{ route('feeds.unsubscribe', $feed) }}" method="post"
+                                  class="d-inline-flex float-right">
+                                @method("DELETE")
+                                @csrf
+                                <button type="submit" class="btn btn-link">
+                                    Unsubscribe
+                                </button>
+                            </form>
+                        @else
+                            <form action="{{ route('feeds.subscribe', $feed) }}" method="post"
+                                  class="d-inline-flex float-right">
+                                @csrf
+                                <button type="submit" class="btn btn-link">
+                                    Subscribe
+                                </button>
+                            </form>
+                        @endif
+                    @endif
                 </div>
             </div>
-            <div class="card-body">
-                <p>
-                    {{ $feed->info }}
-                </p>
-            </div>
         </div>
-        <br>
-        <div class="col-md-6 m-auto">
-            @foreach($feed->photos as $photo)
-                <div class="card md-6">
-                    <img class="card-img-top" src="{{ asset('storage/photos/'.$photo->path) }}" alt="Card image cap">
-                    <div class="card-body">
-                        <form action="{{ route('photos.destroy', [$feed,$photo]) }}" method="post" class="d-inline-flex float-right">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-link">
-                                Удалить
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                <br>
-            @endforeach
+        <div class="card-body">
+            <p>
+                {{ $feed->info }}
+            </p>
         </div>
+    </div>
+    <br>
+    <div class="">
+        @foreach($feed->photos as $photo)
+            @include('layouts.photo')
+            <br>
+        @endforeach
     </div>
 @endsection
